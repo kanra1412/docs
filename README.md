@@ -1,27 +1,192 @@
-# Docs
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.2.
+## 基本结构
 
-## Development server
+data:text/html, <html contenteditable>
+对比后端，事件对应controller,事件处理就是service，dao层对应前端接口层。
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+基于 MVVM 模式，视图和视图模型双向绑定。
 
-## Code scaffolding
++ 在 Angular 中，模型通常表示为 TypeScript 类。
++ 视图通常使用 HTML 和 Angular 指令来创建。
++ 视图模型通常表示为 TypeScript 类，并使用数据绑定服务与视图进行通信。
++ 控制器通常表示为 TypeScript 类，并负责处理用户交互并更新视图模型。
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+在使用 NgRx 和 RxJS 处理数据
 
-## Build
++ 组件：组件是 Angular 应用的构建块。它们负责显示用户界面并处理用户交互。
++ Actions：动作是表示应用程序中发生事件的对象。它们由组件分发给存储。
++ Reducer：Reducer 是纯函数，用于响应操作更新存储中的状态。
++ Store：Store 是一个集中式状态管理器。它存储应用程序的当前状态，并响应 reducer 的更新。
++ Effects：Effects 是用于执行副作用的 RxJS 操作符。它们通常用于从 API 获取数据或执行其他异步操作。
++ Selectors：Selectors 是纯函数，用于从存储中选择特定数据。组件使用选择器来获取所需的数据以更新其视图。
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+以下是使用 NgRx 和 RxJS 处理数据的 Angular 架构的示例工作流程：
 
-## Running unit tests
++ 用户与组件交互。
++ 组件分发一个操作给存储。
++ Reducer 更新存储中的状态。
++ 组件订阅存储中的状态更改。
++ 存储发出状态更改通知。
++ 组件使用选择器从存储中选择特定数据。
++ 组件更新其视图以反映新的数据。
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### 目录结构
 
-## Running end-to-end tests
+**根目录**
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+根目录包含项目的配置文件和启动文件。
 
-## Further help
+File | Description
+--|--
+`package.json` | 项目基本信息、依赖库、以及启动、构建等脚本命令。
+`angular.json` | Angular CLI 配置文件。
+`tsconfig.json` | TypeScript 配置文件。
+`README.md` | 项目说明文件。
+`src/index.html` | 应用程序入口文件。
+`src/main.ts` | 应用程序引导文件。
+`src/polyfills.ts` | 兼容性脚本文件。
+`src/test.ts` | 测试入口文件。
+`src/environments` | 环境配置文件。
+`src/assets` | 静态资源文件。
+`src/app` | 应用程序核心文件。
+`src/app/app.module.ts` | 应用程序根模块。
+`src/app/app.component.ts` | 应用程序根组件。
+`src/app/app.component.html` | 应用程序根组件模板。
+`src/app/app.component.css` | 应用程序根组件样式。
+`src/app/app.component.spec.ts` | 应用程序根组件测试文件。
+`src/app/app.component.e2e-spec.ts` | 应用程序根组件端到端测试文件。
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+* `app`：此目录包含应用程序的源代码，包括组件、服务、管道和路由。
+  * `app.component.css`：此文件包含应用程序根组件的 CSS 样式。
+  * `app.component.html`：此文件包含应用程序根组件的 HTML 模板。
+  * `app.component.spec.ts`：此文件包含应用程序根组件的单元测试。
+  * `app.component.ts`：此文件包含应用程序根组件的 TypeScript 代码。
+  * `app.module.ts`：此文件包含应用程序根模块的 TypeScript 代码。
+* `assets`：此目录包含应用程序的静态资产，例如图像、字体和图标。
+* `environments`：此目录包含针对不同环境（例如开发、测试和生产）的配置文件。
+* `index.html`：此文件是应用程序的根 HTML 文件。它包含对应用程序脚本的引用以及其他元数据。
+* `main.ts`：此文件是应用程序的入口点。它引导 Angular 启动应用程序并加载根模块。
+* `polyfills.ts`：此文件包含一些 polyfill，这些 polyfill 可确保在旧版浏览器中运行必要的 Web API。
+* `styles.css`：此文件包含应用程序的全局 CSS 样式。
+* `test.ts`：此文件包含应用程序的示例单元测试。
+* `e2e`：此目录包含端到端测试的源代码。
+* `node_modules`：此目录包含项目的所有第三方依赖项。
+
+
+* `package.json` 文件包含以下字段，其中一些字段很重要：
+    * `name`：此字段包含项目的名称。
+    * `version`：此字段包含项目的版本号。
+    * `description`：此字段包含项目的简要说明。
+    * `scripts`：此字段包含用于执行常见任务的脚本，例如 `start`、`build` 和 `test`。
+    * `dependencies`：此字段包含项目所需的第三方依赖项列表。
+* `tsconfig.json` 文件包含以下字段，其中一些字段很重要：
+    * `target`：此字段指定要生成的 JavaScript 版本。
+    * `module`：此字段指定要使用的模块系统。
+    * `strict`：此字段启用严格的 TypeScript 检查。
+    * `paths`：此字段允许将别名映射到模块路径。
+* `angular.json` 文件包含以下字段，其中一些字段很重要：
+    * `project`：此字段包含有关项目的基本信息，例如名称和根目录。
+    * `build`：此字段包含有关如何构建应用程序的配置。
+    * `serve`：此字段包含有关如何运行开发服务器的配置。
+    * `test`：此字段包含有关如何运行测试的配置。
+
+### 2. src 目录解析
+
+src 目录是存放应用程序源代码的核心目录，包含组件、服务、管道、路由等模块。以下为该目录下的重要子目录及其解析：
+
+* **app**：
+
+    - 应用程序核心：包含应用程序的根组件、模块、服务、管道等核心代码。
+    - 组件实现：每个组件通常由与其对应的 HTML 模板、CSS 样式、TypeScript 代码以及单元测试组成。
+    - 模块定义：模块用于组织和管理相关的组件、服务等，并定义模块的依赖关系和导出内容。
+    - 服务封装：服务提供可重用的业务逻辑，可在组件之间共享。
+    - 管道处理：管道用于对数据进行格式化或转换，例如日期格式化、货币格式化等。
+
+* **assets**：
+
+    - 静态资源：存放应用程序所需的静态资源，例如图片、字体、图标等，会被嵌入到最终的 HTML 文件中。
+    - 资源优化：可根据项目需求对静态资源进行压缩、雪碧图等优化处理，提升页面加载速度。
+
+* **environments**：
+
+    - 环境配置：针对不同环境（开发、测试、生产等）定义相应的配置参数，例如 API 地址、日志级别等。
+    - 环境隔离：确保不同环境之间配置的独立性，避免环境污染问题。
+    - 动态配置：支持使用环境变量来自定义配置参数，方便部署到不同环境。
+
+* **index.html**：
+
+    - 应用程序入口：定义应用程序的根 HTML 元素，并引入必要的 JavaScript 脚本。
+    - 元数据定义：包含页面标题、关键字、描述等元数据信息，影响 SEO 搜索结果。
+    - 依赖引入：引入应用程序所需的 JavaScript 脚本，例如 main.ts、polyfills.ts 等。
+
+* **main.ts**：
+
+    - 应用程序引导：作为应用程序的入口点，引导 Angular 启动应用程序并加载根模块。
+    - 模块加载：导入并加载应用程序的根模块，并初始化 Angular 框架。
+    - 平台检测：检测当前运行环境，并加载必要的 polyfill 代码以确保兼容性。
+
+* **polyfills.ts**：
+
+    - 浏览器兼容：包含 polyfill 代码，用于在旧版浏览器中模拟必要的 Web API，确保应用程序的兼容性。
+    - 渐进增强：支持按需加载 polyfill 代码，减小对现代浏览器的影响。
+    - 第三方库兼容：可根据项目需求引入第三方库的 polyfill 代码，例如 es6-shim 等。
+
+* **styles.css**：
+
+    - 全局样式：定义应用程序的全局 CSS 样式，应用于所有组件。
+    - 样式规范：建议遵循 CSS 预处理器（例如 SASS、LESS 等）的规范，提高代码的可维护性和可扩展性。
+    - 样式优化：根据项目需求对样式进行压缩、合并等优化处理，提升页面加载速度。
+    - 样式隔离：建议为每个组件定义单独的样式文件，并使用 CSS 模块化语法进行样式隔离。
+
+
+### 2. 模块化设计：拆解复杂，降低耦合
+
+为了提高代码的可维护性和可扩展性，我们可以将系统划分为多个功能模块，每个模块负责管理特定的功能。例如：
+
+- 用户管理模块：负责管理用户认证、授权和相关信息维护。
+- 权限管理模块：负责管理系统权限分配和控制。
+- 概览模块：负责展示系统整体运行状况和关键指标。
+- 告警模块：负责监控系统运行状态，及时发现并处理告警信息。
+- 基础数据管理模块：负责管理和维护各种基础数据，例如设备信息、传感器数据等。
+- 领域数据管理模块：负责管理和分析特定领域的数据，例如生产数据、财务数据等。
+
+每个模块都遵循相同的架构模式，使用 NgRx 和 RxJS 来管理其内部状态和数据流。模块之间通过 Store 和 Action 进行通信，共享数据和状态。
+
+### 逻辑结构（路由）
+
+### 页面结构（组件）
+
+## 数据流
+
+### 1. 架构概述：单向数据流驱动
+
+该架构遵循单向数据流模式，数据从组件流向存储（Store），再从存储流向组件。
+
+- 组件：作为用户界面的构建块，负责显示信息和处理用户交互。
+- Action：表示应用程序中发生的事件，由组件派发到存储。
+- Reducer：纯函数，根据 Action 更新存储中的状态。
+- Store：全局状态管理中心，存储着应用程序的当前状态。
+- Effect：用于执行副作用的 RxJS 操作符，例如从 API 获取数据或执行其他异步操作。
+- Selector：纯函数，从存储中选取特定数据提供给组件。
+
+### 3. 数据流示例：用户登录流程解析
+
+假设我们正在开发一个用户登录功能，以下是该功能的数据流示例：
+
+1. 用户在登录界面输入用户名和密码并点击登录按钮。
+2. 登录组件捕获用户交互并 dispatch 一个 `login` Action 到 Store。
+3. Store 收到 `login` Action 后，将其传递给 Reducer。
+4. Reducer 根据 `login` Action 更新 Store 中的用户状态，例如设置当前登录用户的信息。
+5. Store 广播状态变化事件，通知订阅它的组件。
+6. 订阅 Store 状态变化的组件，例如导航栏、用户信息组件等，更新视图以反映最新的登录状态。
+
+
+- **接口设计：定义清晰的模块接口**，以便模块之间解耦，方便重用和扩展。
+- **状态管理：合理划分状态颗粒度**，避免状态臃肿，降低性能影响。
+- **数据请求：使用 Effects 封装异步操作**，提高代码的可维护性和可测试性。
+- **错误处理：统一处理错误机制**，增强系统鲁棒性。
+- **性能优化：合理使用缓存和数据更新策略**，确保系统流畅运行。
+
+
+
+
