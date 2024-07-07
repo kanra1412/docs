@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>Test</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: blueviolet;
+    }
+
+    .inner-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: aquamarine;
+      min-height: 40%;
+      min-width: 40%;
+      aspect-ratio: 1/1;
+    }
+
+    .yellow-box {
+      background-color: yellowgreen;
+      /* animation: backgroundFadeIn 2s ease-in-out; */
+      /* opacity: 0;
+      transition: opacity 1s ease-in; */
+    }
+
+    @keyframes backgroundFadeIn {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    .centered-boxes {
+      margin: 0 auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .centered-box {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      word-spacing: 5px;
+    }
+
+    .bottom-boxes {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      margin-bottom: 20px;
+    }
+
+    .bottom-box {
+      flex: 1;
+    }
+
+    .justify-text {
+      text-align: justify;
+      text-align-last: justify;
+      min-width: 100px;
+      line-height: 0.5;
+    }
+
+    .justify-text::after {
+      content: '';
+      display: inline-block;
+      width: 100%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    /* aspect-ratio */
+    .box {
+      width: 50%;
+    }
+
+    .box-inner {
+      width: 100%;
+      height: 0;
+      position: relative;
+      padding-bottom: 100%;
+    }
+
+    .box-container {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      background-color: burlywood;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container"
+       style="display: none;">
+    <div class="inner-container">
+      <div class="centered-boxes">
+        <div class="centered-box">无 数 据
+          <!-- <div class="justify-text">无 数 据</div> -->
+        </div>
+      </div>
+      <div class="bottom-boxes">
+        <div class="bottom-box">盒子 2</div>
+        <div class="bottom-box">盒子 3</div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="box">
+      <div class="box-inner">
+        <div class="box-container inner-container ">
+          <div class="centered-boxes">
+            <div class="centered-box">无 数 据
+              <!-- <div class="justify-text">无 数 据</div> -->
+            </div>
+          </div>
+          <div class="bottom-boxes">
+            <div class="bottom-box">盒子 2</div>
+            <div class="bottom-box">盒子 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  // setInterval(() => {
+  //   document.querySelector('.inner-container').classList.toggle("yellow-box");
+  // }, 3000);
+</script>
+
+</html>
