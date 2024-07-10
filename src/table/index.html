@@ -4,12 +4,200 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Table</title>
+  <style type="text/css">
+    .box {
+      display: flex;
+      flex-direction: column;
+      /* align-items: space-around; */
+      justify-content: space-around;
+      height: 600px;
+      background-color: black;
+      width: 500px;
+      margin: 0 auto;
+    }
+    .box-item {
+      width: 50px;
+      flex: 0.4;
+      background-color: aqua;
+    }
+
+    .inner-box {
+      box-sizing: border-box;
+      padding-bottom: 100%;
+      height: 0;
+      width: 100%;
+      background-color: burlywood;
+    }
+    </style>
+
 </head>
 <body style="margin: 0;">
   <!-- <canvas id="canvas" width="1000" height="1000"></canvas>
   <canvas id="webgl" width="1000" height="1000"></canvas> -->
   <!-- <script src="main.js" async defer></script> -->
-  <canvas id="table"></canvas>
-  <script src="canvas.js" async defer></script>
+  <!-- <canvas id="table"></canvas>
+  <script src="canvas.js" async defer></script> -->
+
+  <!-- <div class="box">
+    <div class="box-item">
+      <div class="inner-box">123</div>
+    </div>
+    <div class="box-item"></div>
+  </div> -->
+
+  <textarea name="" id="editor" contenteditable="true">qwe rty uiop.</textarea>
+
+  <button id="open-popup-button">Open popup</button>
+
+  <div id="popup" style="display: none; position: absolute;"></div>
+
+    <button onclick="makeBold()">Make Bold</button>
+<button onclick="makeItalic()">Make Italic</button>
+
+  <script>
+    // Rich text editor element
+const richTextEditor = document.getElementById('editor');
+
+// Variables to store selected text and range
+let selectedText, selectionStart, selectionEnd;
+
+// Popup element
+let popupElement = document.getElementById('popup');
+
+// Function to open the popup
+function openPopup() {
+  // Store current selection range
+  const range = window.getSelection().getRangeAt(0);
+  selectionStart = range.startOffset;
+  selectionEnd = range.endOffset;
+  console.log(selectionStart, selectionEnd);
+
+  // Get selected text
+  selectedText = window.getSelection().toString();
+
+  // Display the popup
+  popupElement.style.display = 'block';
+}
+
+function getSelectedText() {
+    if (window.getSelection) { // 现代浏览器
+        return window.getSelection().toString();
+    } else if (document.selection && document.selection.type != "Control") { // IE < 9
+        return document.selection.createRange().text;
+    }
+    return '';
+}
+
+richTextEditor.addEventListener('selectionchange', handleSelectionChange);
+
+function handleSelectionChange() {
+  const selection = window.getSelection();
+  console.log('test',selection);
+  if (!selection.rangeCount) return;
+
+  // Check if there's actually a selection
+  const selectedRange = selection.getRangeAt(0);
+  if (selectedRange.collapsed) return; // Nothing selected
+
+  const selectedFragment = selectedRange.cloneContents();
+
+  // If there are child elements, style the first one
+  if (selectedFragment.firstChild) {
+    selectedFragment.firstChild.style.fontWeight = 'bold'; // Example styling
+  } else {
+    // If it's just plain text, wrap it in a span and style that
+    const span = document.createElement('span');
+    span.textContent = selectedFragment.textContent;
+    span.style.fontWeight = 'bold'; // Example styling
+    selectedRange.insertNode(span);
+  }
+}
+
+function makeBold() {
+  document.execCommand('bold')
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+   // Check if there's actually a selection
+  const selectedRange = selection.getRangeAt(0);
+  if (selectedRange.collapsed) return; // Nothing selected
+
+  const selectedFragment = selectedRange.cloneContents();
+
+  // If there are child elements, style the first one
+  if (selectedFragment.firstChild) {
+    selectedFragment.firstChild.style.fontWeight = 'bold'; // Example styling
+  } else {
+    // If it's just plain text, wrap it in a span and style that
+    const span = document.createElement('span');
+    span.textContent = selectedFragment.textContent;
+    span.style.fontWeight = 'bold'; // Example styling
+    selectedRange.insertNode(span);
+  }
+}
+
+  function makeItalic() {
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return;
+
+    const selectedText = selection.getRangeAt(0).extractContents();
+    selectedText.firstChild.style.fontStyle = 'italic';
+  }
+ 
+richTextEditor.addEventListener('blur', (event) => {
+  console.log(getSelectedText());
+  let selected = window.getSelection();
+  let range = selected.getRangeAt(0);
+  console.log(range);
+})
+
+
+document.addEventListener('click', (event) => {
+  if (richTextEditor.contains(event.target)) {
+    // event.preventDefault();
+    console.log(event.target);
+  }
+});
+
+// Function to close the popup and restore selection
+function closePopup() {
+  // Restore selection range
+  const range = richTextEditor.createRange();
+  range.setStart(richTextEditor.childNodes[0], selectionStart);
+  range.setEnd(richTextEditor.childNodes[0], selectionEnd);
+  window.getSelection().addRange(range);
+
+  // Hide the popup
+  popupElement.style.display = 'none';
+}
+
+// Attach event listeners
+richTextEditor.addEventListener('selectionchange', () => {
+  // Update selected text and range when selection changes
+  selectedText = window.getSelection().toString();
+  const range = richTextEditor.getSelection().getRangeAt(0);
+  selectionStart = range.startOffset;
+  selectionEnd = range.endOffset;
+});
+
+const popupButton = document.getElementById('open-popup-button');
+popupButton.addEventListener('mousedown', (event) => {
+  // if (richTextEditor.contains(event.target)) {
+    event.preventDefault();
+    openPopup();
+    console.log(event.target);
+  // }
+});
+
+// Implement popup interaction and closing logic here (e.g., using event listeners)
+
+// Example popup closing event listener
+popupElement.addEventListener('click', (event) => {
+  if (event.target === popupElement) { // Check if click is outside popup content
+    closePopup();
+  }
+});
+
+  </script>
 </body>
 </html>

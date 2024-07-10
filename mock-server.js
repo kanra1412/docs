@@ -21,6 +21,31 @@ const server = createServer((req, res) => {
   }
 });
 
+const wsServer = new WebSocket.Server({ port: wsPort });
+
+wsServer.on('connection', (ws) => {
+  ws.on('message', (message) => {
+    // Forward WebSocket messages to the target address
+    const targetWS = new WebSocket(`ws://${targetAddress}:${8082}`); // Replace with the target WebSocket port if different
+
+    targetWS.on('open', () => {
+      targetWS.send(message);
+    });
+
+    targetWS.on('message', (targetMessage) => {
+      ws.send(targetMessage);
+    });
+
+    targetWS.on('close', () => {
+      console.log('Target WebSocket connection closed');
+    });
+  });
+
+  ws.on('close', () => {
+    console.log('Client WebSocket connection closed');
+  });
+});
+
 /**
  * 处理本地请求
  *
@@ -125,3 +150,4 @@ function forwardRequest(req, res, body = null) {
 server.listen(LOCAL_PORT, () => {
   console.log(`Listening on ${LOCAL_PORT}`);
 });
+wsServer.on('listening', () => console.log(`WebSocket on ${wsPort}`));
